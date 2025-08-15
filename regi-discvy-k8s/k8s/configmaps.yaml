@@ -1,0 +1,36 @@
+---
+# Discovery 服务配置
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: discovery-config
+  namespace: discovery-system
+data:
+  discovery.yaml: |
+    Name: discovery.rpc
+    ListenOn: 0.0.0.0:8080
+    Mode: dev
+    Log:
+      ServiceName: discovery
+      Mode: console
+      Level: info
+      Encoding: plain
+    registrationRpc:
+      Target: k8s://discovery-system/registration-headless:8080
+---
+# Registration 服务配置
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: registration-config
+  namespace: discovery-system
+data:
+  registration.yaml: |
+    Name: registration.rpc
+    ListenOn: 0.0.0.0:8080
+    Mode: dev
+    Log:
+      ServiceName: registration
+      Mode: console
+      Level: info
+      Encoding: plain 
