@@ -1,0 +1,13 @@
+Name: discovery.rpc
+ListenOn: 0.0.0.0:8080
+Log:
+  ServiceName: discovery
+  Mode: console
+  Level: info
+  Encoding: plain
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: discovery.rpc
+registrationRpc:
+    Target: registration-headless.discovery-system.svc.cluster.local:8080

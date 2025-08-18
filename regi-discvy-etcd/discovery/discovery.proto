@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package discovery;
+option go_package="./discovery";
+
+message Request {
+  string ping = 1;
+}
+
+message Response {
+  string pong = 1;
+}
+
+service Discovery {
+  rpc Ping(Request) returns(Response);
+}

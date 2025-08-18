@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discovery
+  namespace: discvy-etcd
+  labels:
+    app: discovery
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: discovery
+  template:
+    metadata:
+      labels:
+        app: discovery
+    spec:
+      serviceAccountName: discovery-service-account
+      containers:
+      - name: discovery
+        image: discvy-etcd:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+          name: grpc
+        volumeMounts:
+        - name: config
+          mountPath: /root/etc
+          readOnly: true
+        command: ["./discovery"]
+        args: ["-f", "/root/etc/discovery.yaml"]
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+      volumes:
+      - name: config
+        configMap:
+          name: discovery-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: discovery
+  namespace: discvy-etcd
+  labels:
+    app: discovery
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: grpc
+    nodePort: 31080
+  selector:
+    app: discovery
+---
+# Headless Service for service discovery
+apiVersion: v1
+kind: Service
+metadata:
+  name: discovery-headless
+  namespace: discvy-etcd
+  labels:
+    app: discovery
+spec:
+  clusterIP: None
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: grpc
+  selector:
+    app: discovery 
