@@ -1,0 +1,61 @@
+---
+# Discovery 服务配置
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: discovery-config
+  namespace: discvy-etcd
+data:
+  discovery.yaml: |
+    Name: discovery.rpc
+    ListenOn: 0.0.0.0:8080
+    Mode: dev
+    Log:
+      ServiceName: discovery
+      Mode: console
+      Level: info
+      Encoding: plain
+    Etcd:
+      Hosts:
+      - etcd.base.svc.cluster.local:2379
+      Key: discovery.rpc
+      TTL: 30s
+    registrationRpc:
+      Etcd:
+        Hosts:
+        - etcd.base.svc.cluster.local:2379
+        Key: registration.rpc
+    secret:
+      secret_user: ${SECRET_USER}
+      secret_pass: ${SECRET_PASS}
+---
+# Registration 服务配置
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: registration-config
+  namespace: regi-etcd
+data:
+  registration.yaml: |
+    Name: registration.rpc
+    ListenOn: 0.0.0.0:8080
+    Mode: dev
+    Log:
+      ServiceName: registration
+      Mode: console
+      Level: info
+      Encoding: plain
+    Etcd:
+      Hosts:
+      - etcd.base.svc.cluster.local:2379
+      Key: registration.rpc
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: discvy-etcd-secret
+  namespace: discvy-etcd
+type: Opaque
+stringData:
+  secret_user: "wendell" 
+  secret_pass: "superpass"

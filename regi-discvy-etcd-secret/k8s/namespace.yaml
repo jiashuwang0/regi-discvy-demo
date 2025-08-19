@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: discvy-etcd
+  labels:
+    name: discvy-etcd 
+---
+# Registration 服务命名空间
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: regi-etcd
+  labels:
+    name: regi-etcd
+---
+# base 服务命名空间
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: base
+  labels:
+    name: base
