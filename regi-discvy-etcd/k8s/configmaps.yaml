@@ -19,6 +19,7 @@ data:
       Hosts:
       - etcd.base.svc.cluster.local:2379
       Key: discovery.rpc
+      TTL: 30s
     registrationRpc:
       Etcd:
         Hosts:

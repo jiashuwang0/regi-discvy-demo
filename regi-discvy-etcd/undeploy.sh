@@ -53,7 +53,7 @@ kubectl wait --for=delete namespace/base --timeout=60s || true
 # 删除 Docker 镜像
 echo -e "${YELLOW}🐳 清理 Docker 镜像...${NC}"
 eval $(minikube docker-env)
-docker rmi discovery-etcd:latest 2>/dev/null || echo -e "${YELLOW}ℹ️  镜像 discovery-etcd:latest 不存在${NC}"
+docker rmi discvy-etcd:latest 2>/dev/null || echo -e "${YELLOW}ℹ️  镜像 discvy-etcd:latest 不存在${NC}"
 docker rmi regi-etcd:latest 2>/dev/null || echo -e "${YELLOW}ℹ️  镜像 regi-etcd:latest 不存在${NC}"
 
 echo -e "${GREEN}✅ 清理完成！${NC}" 

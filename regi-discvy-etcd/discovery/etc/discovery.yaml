@@ -9,5 +9,6 @@ Etcd:
   Hosts:
   - 127.0.0.1:2379
   Key: discovery.rpc
+  TTL: 30s
 registrationRpc:
     Target: registration-headless.discovery-system.svc.cluster.local:8080
