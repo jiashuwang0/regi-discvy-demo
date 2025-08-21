@@ -25,9 +25,6 @@ data:
         Hosts:
         - etcd.base.svc.cluster.local:2379
         Key: registration.rpc
-    secret:
-      secret_user: ${SECRET_USER}
-      secret_pass: ${SECRET_PASS}
 ---
 # Registration 服务配置
 apiVersion: v1

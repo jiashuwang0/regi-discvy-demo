@@ -27,7 +27,8 @@ func main() {
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
-	c.Secret.Load()
+	// 自动从环境变量加载配置文件中未设置的值
+	config.LoadFromEnv(&c)
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
